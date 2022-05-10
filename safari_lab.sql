@@ -3,7 +3,6 @@ DROP TABLE animals;
 DROP TABLE employees;
 DROP TABLE enclosures;
 
-
 CREATE TABLE enclosures (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
@@ -42,8 +41,8 @@ INSERT INTO enclosures (name, capacity, closed_for_maintenance) VALUES ('E', 350
 INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Woof', 'Snake', 5, 2);
 INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Betsy', 'Hippo', 25, 3);
 INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Kozmo', 'Monkey', 6, 1);
-INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Bob', 'Donkey', 12, 1);
-INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Razor', 'Lion', 15, 4);
+INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Bob', 'Donkey', 25, 1);
+INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Razor', 'Lion', 25, 4);
 INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Mitsy', 'Giraffe', 7, 5);
 INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Rory', 'Tiger', 7, 3);
 INSERT INTO animals (name, type, age, enclosure_id) VALUES ('Snape', 'Snake', 7, 2);
@@ -62,7 +61,6 @@ INSERT INTO assignments (employee_id, enclosure_id, day) VALUES (4, 1, 'Wednesda
 INSERT INTO assignments (employee_id, enclosure_id, day) VALUES (4, 3, 'Thursday');
 INSERT INTO assignments (employee_id, enclosure_id, day) VALUES (5, 4, 'Friday');
 
-
 SELECT name FROM animals WHERE enclosure_id = 1;
 
 SELECT name 
@@ -70,4 +68,24 @@ FROM employees
 INNER JOIN assignments
 ON assignments.employee_id = employees.id
 WHERE enclosure_id = 1;    
+
+
+-- EXTENSION!
+
+SELECT employees.name
+FROM employees
+INNER JOIN assignments
+ON employees.id = assignments.employee_id
+INNER JOIN enclosures
+ON assignments.enclosure_id = enclosures.id
+WHERE closed_for_maintenance = TRUE;
+
+SELECT enclosures.name
+FROM enclosures
+INNER JOIN animals
+ON enclosures.id = animals.enclosure_id
+WHERE animals.age = (select max(animals.age) from animals)
+ORDER BY animals.name ASC;
+
+
 
